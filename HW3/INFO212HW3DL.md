@@ -61,24 +61,28 @@ We find that features highly correlated according to the correlation matrix are 
 - **IncomePerCap**: Negatively correlated with employment rate, which may suggest that higher-income groups have a lower employment rate, possibly because they do not need to work or have more selective employment options.
 - **Transit**: Negatively correlated with employment rate, which may suggest that individuals who rely on public transportation have a lower employment rate, possibly due to the convenience of transportation and the geographic distribution of job opportunities.
 
-### 2) Whether we can establish a clustering model to analyze the common characteristics of a population under a certain employment rate?
+## Q: Whether we can establish a clustering model to analyze the common characteristics of a population under a certain employment rate?
 
-We used a hierarchical clustering model to cluster the input features. After training, the model's dendrogram is as follows:
+In order to better visualize clustering results and facilitate the selection of clustering clusters. We have chosen hierarchical clustering as the clustering tool for our clustering task.
+
+After training, the model's dendrogram is as follows:
 ![Dendrogram](images/tree.png)
 
-##### Clustering Analysis
+### Clustering Analysis
 We visualized the clustering results with a scatter plot combined with PCA, where each color represents a different cluster:
 ![Cluster Visualization](images/cluster.png)
 
 The results show a clear clustering phenomenon, indicating that the model can easily classify the data into multiple categories. This implies that data within the same cluster tends to have similar characteristics.
 
-##### Stratification
+### Mean Employ Rate accross clusters
 We averaged the employment rates of different clusters and observed a clear stratification of employment rates across different clusters:
 ![Employment Rate Stratification](images/employ.png)
 
-This essentially proves our hypothesis that data in the same cluster is more likely to be characterized by specific features.
+It is observed that a clear stratification of employment rates across different clusters.
 
-##### Feature Data Distribution
+- This proves that there are indeed certain feature differences accross different clusters
+
+### Features Data Distribution
 We aim to compare clusters with the highest and lowest employment rates and identify common features within the same cluster and across different clusters.
 
 - We used a t-test to identify the top n features that contribute the most to these clusters.
@@ -92,19 +96,27 @@ We found significant differences in data distribution for these top n features b
 
 This suggests that clusters with lower employment rates are more representative of the elite class, while clusters with higher employment rates are more representative of the lower class, who are more likely to engage in physical and repetitive labor and have higher poverty rates.
 
-### 3) Can we generalize the conclusions and models we have drawn from this dataset to other relevant datasets?
+## Q: Can we generalize the conclusions and models we have drawn from this dataset to other relevant datasets?
 
-We attempted to generalize our model to the 2017 dataset. If the model trained on the 2015 dataset generalizes well to the 2017 dataset, it suggests that our conclusions may be generalized to datasets over a longer time span.
+We attempted to generalize generalize the two models we have done above to the 2017 dataset. 
+- If the model trained on the 2015 dataset generalizes well to the 2017 dataset, it suggests that our conclusions may be generalized to datasets over a longer time span.
 
-#### Generalization of the Deep Learning Model
+### Generalization of the Deep Learning Model
 We generalized our deep learning model trained on the 2015 dataset to the 2017 dataset, achieving an mse of 0.3248.
 
 Here is the visualization of the generalization results:
 ![2017 DL Generalization](images/2017DL.png)
 
-The generalization results are barely acceptable. The model shows some degree of overfitting. Our conclusions can be partially transferred to the 2017 dataset.
+The generalization result doesn't look that good, the model shows some degree of overfitting. 
+- Our model's generalization performance on the 2017 dataset is average, which means that the data distribution will change over time. And This phenomenon can also be observed from PCA visualization:
+    - the distribution of data is more extensive compared to 2015
 
-#### Hierarchical Clustering
+### Hierarchical Clustering
 We performed hierarchical clustering on the 2017 dataset and extracted its employment rate. We observed a stratification phenomenon in employment rates across different clusters, suggesting that our clustering conclusions can be somewhat applied to future datasets.
+![2017 DL Generalization](images/2017employ.png)
 
-In summary, our model performed worse on the 2017 dataset than on the 2015 test set, but it is still within an acceptable range. We can partially apply our conclusions over a certain time span, but the precision of our conclusions diminishes as the time span increases.
+### In summary: 
+- Our regression prediction model performed worse on the 2017 dataset than on the 2015 test set, which means it is difficult to generalize the model trained on the 2015 dataset to future datasets.
+- However, the clustering prediction model can still perform normally on the 2017 dataset, which means that the stratification phenomenon of employment rates may not change over time. 
+
+Overall, the correlation and distribution between data features may be time-dependent to some extent, but there is always a phenomenon of data stratification within them.
