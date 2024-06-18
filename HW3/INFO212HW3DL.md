@@ -113,7 +113,7 @@ The generalization result doesn't look that good, the model shows some degree of
 
 ### Hierarchical Clustering
 We performed hierarchical clustering on the 2017 dataset and extracted its employment rate. We observed a stratification phenomenon in employment rates across different clusters, suggesting that our clustering conclusions can be somewhat applied to future datasets.
-![2017 DL Generalization](images/2017cluster.png)
+![2017 DL Generalization](images/2017employ.png)
 
 ### In summary: 
 - Our regression prediction model performed worse on the 2017 dataset than on the 2015 test set, which means it is difficult to generalize the model trained on the 2015 dataset to future datasets.
