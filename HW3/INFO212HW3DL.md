@@ -1,22 +1,47 @@
-### 1) Whether we can establish a model to predict the future employment rate based on this employment pattern?
+## Q: Whether we can establish a model to predict the employment rate based on these employment pattern? What are the important patterns to model?
+In order to make the prediction results more accurate and to better explain our model results. We established a simple deep learning model with several MLP layers that includes an Attention structure. 
+- Attention scores:
+    - We expect the Attention scores to reflect the model's perceived correlations between input features, akin to a correlation coefficient matrix within the model. When the model's accuracy is sufficiently high, these attention scores can replace the correlation coefficient matrix to more accurately reflect the importance between input features.
+- Gradients reasoning:
+    - We attempted to use model gradients to show which input features are deemed important by the model. By backpropagating the output gradients through the model, we can compute the gradients of the input features. The larger the absolute gradient of an input feature, the more important the model considers that input to be.
 
-#### Deep Learning Prediction Model
-We established a simple deep learning model with several MLP layers that includes an Attention structure. We expect the Attention scores to reflect the model's perceived correlations between input features, akin to a correlation coefficient matrix within the model. When the model's accuracy is sufficiently high, these attention scores can replace the correlation coefficient matrix to more accurately reflect the importance between input features.
+### Training Preprocessing
 
-##### Training Preprocessing
-Before feeding data into the model for training, we standardized the data. This step eliminates the influence of different data scales on the model and enhances the model's stability.
 
-##### Performance Metrics
-We achieved an error (mse) of 0.1610 on the test set.
+Before training the model, we need to do some processing on the raw data:
 
-##### Correlation Analysis
+
+1. Separate the data into input data and training objectives.
+
+2. Separate these data into training sets and test sets for easy performance evaluation.
+
+3. Standardize training and testing data to eliminate the impact of inconsistent data scales.
+
+### Training
+We trained 5 epoch using a learning rate of 1e-3. And to prevent overfitting, we set a weight_decay of 1e-4 for the learner and enable the technique of batch normalization。
+
+### Evaling & Performance Metrics
+We validated the trained model on the test set, and achieved an error (mse) of 0.1587 on the test set. In addition, we also use PCA technology to extract important features from the data and compress the dimensions to 1 dimension, thereby successfully visualizing the training objectives and prediction results. 
+
+Here is the PCA visualization result:
+![PCA](images/pca.png)
+
+Based on the PCA visualization results, we can find that the model can fit the distribution of test data well. 
+
+And the conlustion for this section is:
+- we are able to successfully establish a model for predicting employment rates based on other features, and its performance is quite good.
+
+### Correlation Analysis
 Here is the heatmap of the model's Attention scores:
 ![Attention Scores](images/attn_score.png)
 
-For instance, regarding income, the model identifies a strong positive correlation with production and a negative correlation with TotalPop and gender.
+We can see that the model has successfully calculated the correlation between input features, and this often more accurately reflects the relationship between features than the correlation coefficient matrix.
 
-##### Feature Importance to Output
-We attempted to use model gradients to show which input features are deemed important by the model. By backpropagating the output gradients through the model, we can compute the gradients of the input features. The larger the absolute gradient of an input feature, the more important the model considers that input to be.
+Taking income as an example, the model suggests that there is a strong correlation between income and **Office**, as well as **Drive** and **MeanCommute**. 
+- This is also in line with intuition, as high-income individuals typically have a clearer understanding of driving and working in the office
+
+### Gradien Reasoning
+We calculate the gradient of the model output on the input data to determine which parts of the input the model considers to have the greatest impact on the output.
 
 - Here is the correlation matrix of input features to the output feature:
 ![Correlation Matrix](images/corr.png)
@@ -25,8 +50,16 @@ We attempted to use model gradients to show which input features are deemed impo
 ![Gradient Analysis](images/grad.png)
 
 We find that features highly correlated according to the correlation matrix are indeed related to the output. The gradient analysis results more precisely reflect the importance of input features to the output. Notably, the model indicates that the input features with strong correlations to the employment rate are:
-- Positively correlated: Men, Poverty.
-- Negatively correlated: Women, IncomePerCap.
+
+#### Positively Correlated Features: 
+- **Men**: Positively correlated with employment rate, possibly indicating that the employment rate is relatively higher for men.
+- **Poverty**: Positively correlated with employment rate, which may suggest that individuals in poverty have a higher employment rate, possibly because they are more motivated to find work.
+- **WorkAtHome**: Positively correlated with employment rate, possibly indicating that people who can work from home have a higher employment rate.
+
+#### Negatively Correlated Features:
+- **Women**: Negatively correlated with employment rate, possibly indicating that the employment rate is relatively lower for women.
+- **IncomePerCap**: Negatively correlated with employment rate, which may suggest that higher-income groups have a lower employment rate, possibly because they do not need to work or have more selective employment options.
+- **Transit**: Negatively correlated with employment rate, which may suggest that individuals who rely on public transportation have a lower employment rate, possibly due to the convenience of transportation and the geographic distribution of job opportunities.
 
 ### 2) Whether we can establish a clustering model to analyze the common characteristics of a population under a certain employment rate?
 
